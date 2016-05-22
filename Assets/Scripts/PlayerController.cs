@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-
+using System.Collections.Generic;
+using System;
 
 [System.Serializable]
 public class Boundary
@@ -14,9 +13,12 @@ public class PlayerController : MonoBehaviour {
 	public Boundary boundary;
 	public float fTilt;
 	public GameObject bolt;
+	public GameObject[] weapons;
+	public KeyCode[] keys;
 	public Transform shotSpawn;
 	public float fireRate;
 	private float nextFire = 0.0f;
+	private SortedDictionary<KeyCode, GameObject> weapon_key_map;
 	void FixedUpdate()
 	{
 		float hMove = Input.GetAxis("Horizontal");
@@ -41,15 +43,43 @@ public class PlayerController : MonoBehaviour {
 #endif
 	}
 
+	void Start()
+	{
+		weapon_key_map = new SortedDictionary<KeyCode, GameObject>();
+		for (int i=0; i < keys.Length; i++)
+		{
+			weapon_key_map.Add(keys[i], weapons[i]);
+		}
+	}
+
 	void Update()
 	{
-		if(Input.GetKey(KeyCode.Z) && Time.time > nextFire)
+
+		if(Time.time > nextFire)
 		{
 			nextFire = Time.time + fireRate;
-			Instantiate(bolt, shotSpawn.position, shotSpawn.rotation);
+			if (Input.GetKey(KeyCode.Z)){
+				Instantiate(bolt, shotSpawn.position, shotSpawn.rotation);
+			}
+			if (Input.GetKey(KeyCode.X))
+			{	//tribolt
+				Instantiate(bolt, shotSpawn.position, shotSpawn.rotation);
+				Instantiate(bolt, shotSpawn.position, Quaternion.Euler(0.0f, 30.0f, 0.0f));
+				Instantiate(bolt, shotSpawn.position, Quaternion.Euler(0.0f, -30.0f, 0.0f));	
+			}
 			GetComponent<AudioSource>().Play();
-
 		}
 
+		//}
+
+	}
+
+	GameObject GetWeapon(KeyCode key)
+	{
+		if (!weapon_key_map.ContainsKey(key))
+		{
+			return null;
+		}
+		return weapon_key_map[key];
 	}
 }

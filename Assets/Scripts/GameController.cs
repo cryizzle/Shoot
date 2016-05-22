@@ -100,6 +100,7 @@ public class GameController : MonoBehaviour {
 		StartCoroutine(SpawnWaves());
 		score = 0;
 		StartCoroutine(UpdateScore());
+		StartCoroutine(StartingCountdown());
 
 	}
 
@@ -137,5 +138,20 @@ public class GameController : MonoBehaviour {
 		scoreText.text = "";
 		yield return new WaitForSeconds(0.1f);
 		scoreText.text = score.ToString();
+	}
+
+	IEnumerator StartingCountdown()
+	{
+		gameoverText.text = "";
+		yield return new WaitForSeconds(0.1f);
+		gameoverText.text = "GET READY...";
+		yield return new WaitForSeconds(0.1f);
+		gameoverText.text = "";
+		yield return new WaitForSeconds(0.1f);
+		gameoverText.text = "GET READY...";
+		yield return new WaitForSeconds(2.5f);
+		gameoverText.text = "GO!";
+		yield return new WaitForSeconds(0.5f);
+		gameoverText.text = "";
 	}
 }
