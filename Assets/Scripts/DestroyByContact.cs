@@ -4,6 +4,7 @@ using System.Collections;
 public class DestroyByContact : MonoBehaviour {
 	public GameObject asteroid_explosion;
 	public GameObject player_explosion;
+	private bool GodMode = false;
 	private GameController gameController;
 	public int scoreScale;
 	public GUIText addScore;
@@ -35,7 +36,7 @@ public class DestroyByContact : MonoBehaviour {
 			return;
 		}
 #endif
-		if (other.tag == "Player")
+		if (other.tag == "Player" && !GodMode)
 		{
 			Instantiate(player_explosion, transform.position, transform.rotation);
 			gameController.GameOver();
@@ -46,7 +47,8 @@ public class DestroyByContact : MonoBehaviour {
 			ShowAddedScore(score);
 		}
 		Instantiate(asteroid_explosion, transform.position, transform.rotation);
-		Destroy(other.gameObject);
+		if (other.tag != "Player" || !GodMode)
+		{ Destroy(other.gameObject); }
 		Destroy(gameObject);
 
 	}
