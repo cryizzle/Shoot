@@ -4,7 +4,7 @@ using System.Collections;
 public class DestroyByContact : MonoBehaviour {
 	public GameObject asteroid_explosion;
 	public GameObject player_explosion;
-	private bool GodMode = false;
+	private bool GodMode = true;
 	private GameController gameController;
 	public int scoreScale;
 	public GUIText addScore;
@@ -25,7 +25,7 @@ public class DestroyByContact : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Boundary" || other.tag == "Asteroid") return;
+		if (other.tag == "Boundary" || other.tag == "Asteroid" || other.tag == "Sonar") return;
 #if false //collision stuff for asteroids
 		if (other.tag == "Asteroid")
 		{
